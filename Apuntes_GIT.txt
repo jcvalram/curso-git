@@ -1,0 +1,260 @@
+APUNTES GIT
+###########
+
+1- FUNDAMENTOS GIT
+
+git --version -> Version de GIT
+
+git help -> Ayuda de GIT
+
+git help commit -> Descripción del comando commit
+
+git config --global user.name "name" -> Establece nombre del usuario
+
+git config --global user.email "email@mail.com" -> Establece email del usuario
+
+git config --global -e -> Editar fichero de configuración
+
+git init -> Inicializa el repositorio local
+
+git config --global init.defaultBranch <name> -> Cambiar nombre de la rama principal (Por defecto "master")
+
+git status
+
+git add . -> Incluye todos los cambios y los prepara para hacer commit
+
+git reset <nombre fichero> -> No incluye ese fichero para hacer commit
+
+git commit -m "<message>" -> Hace commit de los cambios en la rama
+
+git checkout -- . -> Restaura los cambios como estaba en el último commit.
+
+git branch -> Indica la rama donde estás trabajando
+
+git branch -m <old_name> <new_name> -> Renombrar el nombre de una rama
+
+git commit -am "<message"> -> Incluye el fichero con el cambio y hace el commit. Sólo funciona si el fichero ya ha sido
+agregado anteriormente. No funciona cuando se hace commit la primera vez.
+
+git log -> Muestra los commit de la rama
+
+git add *.html -> Incluye solo los ficheros con extensión .html
+
+git add folder/*.js -> Incluye los ficheros con extensión .js que están dentro de la carpeta "folder"
+
+git add folder/ -> Incluye todos los ficheros y subdirectorios de la carpeta "folder"
+
+git status --short -> Muestra información resumida de los ficheros
+
+git status --short -b | git status -sb -> Muestra información resumida de los ficheros indicando la rama actual
+
+git config --global alias.s "status --short" -> Modifica la configuración global del repositorio para crear un alias para hacer un status --short ejecutando "git s"
+
+Ejemplo:
+git config --global alias.lg "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+
+git log --oneline -> Muestra resumen de los commits realizados en la rama
+
+git diff -> Muestra los cambios realizados en el repositorio local sin ser añadidos al staged
+
+git diff --stage -> Muestra los cambios realizados en el repositorio local añadidos al staged
+
+git commit --amend -m "<message>" -> Modifica el mensaje del último commit realizado.
+
+git reset --soft HEAD^ -> Resetea a el último commit, pero mantiene los cambios.
+
+git reset --soft <numero hash> -> Resetea a un commit en concreto, manteniendo los cambios.
+
+git reset --mixed <numero hash> -> Resetea a un commit en concreto y los saca del stage manteniendo los cambios y se eliminan los commits que habían posteriormente.
+
+git reset --hard <numero hash> -> Resetea a un commit en concreto, los saca del stage y vuelve al estado en el que se encontraba en la version del commit
+
+git reflog -> Muestra el histórico de los cambios realizados en el repositorio. Se ven commits y reset.
+
+git commit --amend -> Edita la información del último commit.
+
+git mv destruir-mundo.md salvar-mundo.md -> Cambia mueve un fichero con cambios sin sacarlo del stage. Si el cambio es en la misma carpeta realiza un cambio de nombre.
+
+git rm salvar-mundo.md -> Elimina un fichero, pero lo mantiene en el stage
+
+
+2- RAMAS, UNIONES CONFLICTOS Y TAGS
+
+Rama -> Es una línea de tiempo de commits
+
+Merge -> Uniones de ramas. Existen varios tipos:
+
+- Fast-fordward: Git detecta que no hay ningún cambio en la rama principal y los cambios pueden añadirse de forma transparente y los commits añadidos pasan a la
+rama principal como si nunca se hubiesen separado.
+
+- Automático: Git detecta que en la rama principal hubo un cambio que la rama secundaria desconoce y cuando se hace el merge comprueba que no hay conflictos y lo realiza
+sin ningún problema.
+
+- Manual: Git detecta un conflicto por detectar cambios en los mismos archivos que se modificaron tanto en la rama principal como la secundaria. GIT al no poder resolverlo
+solicitará que lo resolvamos de forma manual y crea un commit nuevo de este merge.
+
+git branch <branch-name> -> Crea una nueva rama en el repisitorio local.
+
+git branch -> Muestra la lista de ramas en el repositorio local.
+
+git merge <branch-name> -> Para ejecutar este comando hay que estar situado en la rama donde queremos traer los cambios. Cuando se ejecuta ponemos la rama desde donde
+traemos los cambios.
+
+git branch -d <branch-name> -> Elimina una rama.
+
+git branch -d <branch-name> -f -> Elimina una rama de manera forzada.
+
+git checkout <branch-name> -> Cambia de rama
+
+git checkout -b <branch-name> -> Crea una nueva rama y cambia a la misma automáticamente.
+
+git push --set-upstream <nombre-remoto> <feature-branch> -> Sube los cambios al repositorio remoto indicando su nombre y el de la rama. Esto se ejecuta cuando se crea una
+rama con comandos de git. Ej: git push --set-upstream origin rama-prueba. Una vez ejecutado la primera vez ya se puede hacer git push de la rama para siguientes cambios.
+
+- Tag: Sirve para poner una etiqueta en un punto concreto del repositorio, normalmente se usa para marcar versiones de la aplicación.
+
+git tag <tag-name> -> Crea una etiqueta en el commit actual del repositorio.
+
+git tag -> Muestra todos los tags del repositorio
+
+git tag -d <tag-name> -> Elimina una etiqueta.
+
+git tag -a v1.0.0 -m "Version 1.0.0" -> Crea una etiqueta con versión anotada y necesita un mensaje "-m".
+
+git tag -a v0.1.0 3e886a6 -m "Version Alpha de la app" -> Crea una etiqueta con versión anotada para un commit especificando el hash.
+
+git show <tag-name> -> Muestra información detallada del tag y el commit asociado.
+
+git push --tags -> Sube los tags creados al repositorio remoto.
+
+
+3- STASH Y REBASE
+
+- Stash: Es como una bóveda donde se puede guardar los cambios que GIT aún no da seguimiento, posteriormente volvemos al punto inicial desde donde empezamos a realizar
+los cambios. Una vez creado el stash, podemos volver a tener los cambios que se guardaron y continuar trabajando sobre los mismos.
+
+- Rebase: Permite unir commits, separar commits, renombrar nombres de los commits. Es recomendable no hacerlo en la rama principal.
+
+git stash -> Guarda los cambios realizados que no han sido commiteados y vuelve a la versión anterior desde donde partieron los cambios.
+
+git stash list -> Muestra la lista de stashes.
+
+git stash pop -> Toma los cambios del último stash y a la vez elimina ese stash. Si hubiera más de uno se van corriendo las posiciones. Ej: stash{0}, stash{1}, etc.
+
+git stash clear -> Borra todos los stash creados.
+
+git stash apply <index-stash> -> Toma los cambios del stash: stash@{indice} y no lo elimina de la lista
+
+git stash drop <index-stash> -> Elimina el stash: stash@{indice} de la lista. Si no se pone indice elimina el último añadido que es la posición 0.
+
+git stash show <index-stash> -> Muestra los archivos modificados que se guardaron en el stash: stash@{indice}.
+
+git stash save "<message>" -> Crea un stash con un mensaje.
+
+git stash list --stat -> Muestra la lista de stashes con información de cada uno.
+
+https://git-scm.com/docs/git-stash
+
+git rebase <branch-name> -> Trae los commits del branch-name a la rama donde está situado, teniendo en cuenta desde el punto donde se separaron.
+
+git rebase -i HEAD~4 -> Realiza el rebase interactivo de los últimos 4 commits desde el HEAD. Mostrará una pantalla de edición con unas opciones para realizar alguna
+acción con los commits. 
+- Squash, fusiona el commit donde usas la opción con el siguiente commit. Una vez guardas el cambio, te muestra otra
+pantalla de edición donde muestra los mensaje de los commits de la unión para que elijas cuál poner o poner otro mensaje.
+- Reword, permite modificar el mensaje de un commit. Marcando el commit con reword sólo se indica que se va a cambiar el mensaje, pero no se modifica aún.
+En la segunda pantalla de edición es cuando se modifica el mensaje.
+- Edit, permite editar un commit. Marcando el commit con edit sólo se indica que se va a modificar el commit. Posiblemente se quiera separar en otros commits los cambios
+realizados. Una vez que se realizan los cambios debemos confirmar con git rebase --continue.
+git rebase --abort -> Aborta los cambios del rebase.
+
+
+4- GITHUB
+
+Es una plataforma de desarrollo colaborativo de software para alojar proyectos. Permite crear repositorios privados y publicos.
+
+Enlaces útiles:
+
+https://docs.github.com/es/get-started/getting-started-with-git/caching-your-github-credentials-in-git#platform-windows
+
+https://docs.github.com/es/get-started/getting-started-with-git/caching-your-github-credentials-in-git#platform-linux
+
+https://wiki.archlinux.org/title/Gitosis#:~:text=Gitosis%20is%20a%20tool%20which,system%20accounts%20on%20the%20server.
+
+https://github.com/res0nat0r/gitosis
+
+Subir repositorio a GitHub:
+
+git remote add origin <url-repo> -> Añade un nuevo repositorio remoto dándole el nombre "origin" pasándole la url.
+git branch -M master
+git push -u origin master -> Especifica que se suben los cambios de la rama master al repositorio remoto con nombre "origin".
+
+git remote add origin <url-repo> -> Crea un origen remoto en nuestro pc. Origin es el nombre de nuestro remote y url-repo es la dirección del repositorio en GitHub.
+
+git remote -v -> Muestra las urls remotas de donde se hace el fetch y el push. Por lo general llevan el nombre de "origin".
+
+git clone <url-repo> -> Clona el repositorio remoto en nuestro equipo local. Al clonar tenemos el histórico de cambios y tags del repositorio.
+
+git branch -a -> Muestra las ramas en el repositorio remoto.
+
+git pull -> Trae los cambios del repositorio que están en GitHub
+
+git pull --all -> Trae todas las ramas del repositorio.
+
+git checkout <branch-name> -> Cambia de rama en el repositorio local. Si se trae las ramas del repositorio remoto y se intenta cambiar a una rama local que no existe 
+con el mismo nombre de la rama remota, lo crea en local y cambia de rama.
+
+git push -u origin master -> Origin es el nombre del repositorio, master es la rama donde suben los cambios. La opción -u es para que la próxima vez que querramos hacer un 
+push no necesitemos especificar la rama.
+
+git push --tags -> Sube los tags de mi repositorio local a GitHub
+
+git push <nombre-remoto> :<feature-branch> ->  Cuando se borra una rama en el repositorio local se actualiza en el repositorio remoto. Ej: git push origin :rama-villanos
+
+git remote prune <nombre-remoto> -> Revisa la ramas que no existen en el repositorio remoto y elimina las referencias en el repositorio local.
+
+git config --global pull.ff only -> Modifica la configuración global del repositorio para que el pull sea sólo fast forward
+
+git config pull.rebase tue -> Modifica la configuración local del repositorio para habilitar el pull rebase.
+
+git config --global pull.rebase tue -> Modifica la configuración global del repositorio para habilitar el pull rebase.
+
+
+5- INTERFAZ GITHUB
+
+Tutorial MARKDOWN: http://www.markdowntutorial.com/
+GitHub Markdown sheet: https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf
+Emojis GitHub: https://www.webpagefx.com/tools/emoji-cheat-sheet/
+GitHub Flow: https://blog.mergify.com/understanding-the-github-pull-request-workflow/
+
+PullRequest
+Sirve para unificar una rama secundaria a la rama principal haciendo un análisis previo a un merge, revisando el código para verificar que está todo correcto y no pueda
+causar algún problema a la lógica de negocio, además de esto también se verifica que se cumplen los estándares de calidad de código además de test unitarios si se requiere
+también.
+
+- Squash and Merge: Une los cambios al último commit de la rama master.
+
+Git Fetch:
+
+Actualiza el histórico de commits del repositorio remoto al repositorio local, pero esto no quiere ddecir que actualiza el repositorio con los cambios. Para actualizar los
+cambios debemos usar git pull.
+
+6- GITHUB AVANZADO
+
+Fork, Clone y Colaboraciones
+
+Fork -> Es clonar un repositorio original de otro usuario de GitHub a tu cuenta de GitHub donde tendremos acceso total para hacer commits, push, etc. Es como una rama del 
+repositorio principal.
+
+Actualizar mi Fork
+
+git remote add upstream <url-repo-original>
+
+git pull upstream master
+
+Flujo de Trabajo:
+
+Siempre que se hace un nuevo desarrollo se debería crear una feature branch.
+Para saber las ramas de otros desarrollos en el repositorio deberíamos usar:
+
+git fetch
+git branch -a (Para ver todas las ramas del repositorio)
