@@ -258,3 +258,16 @@ Para saber las ramas de otros desarrollos en el repositorio deberíamos usar:
 
 git fetch
 git branch -a (Para ver todas las ramas del repositorio)
+
+Issues
+Se usa para reportar problemas o añadir cambios a los usuarios que administran el repositorio para que se pueda corregir algo.
+
+Milestone
+Agrupa issues para planificar un objetivo.
+
+Wikis
+Es algún tipo de Wikipedia, se puede subir información o una especie de manual de usuario de cómo funciona la aplicación.
+
+Gits
+Muy útil para tener apuntes de código que pueda usar en un futuro.
+
