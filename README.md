@@ -1,3 +1,3 @@
-### Curso de Git
+## Curso de Git
 
-## Ejemplos de comandos de GIT
+### Ejemplos de comandos de GIT
